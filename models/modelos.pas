@@ -3,76 +3,112 @@ unit modelos;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtDlgs, Generics.collections;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtDlgs,
+  Generics.collections, System.Generics.Defaults;
 
 type
   Metadado = Class
-    private
-    titulo : TArray<string>;
-    data : TDictionary <String, String>;
-    banco : String; /// banco que será utilizado
+  private
+    dataValores, headerValores: TArray<String>;
+    data: TDictionary<String, String>;
+    header: TDictionary<String, String>;
+    // banco: String;
+    /// banco que será utilizado
 
-    public
+  public
+
+    // function configure(inputTitulo, inputDados: TArray<string>)  : TDictionary<string, string>;
+    function getDados: TDictionary<String, String>;
+    function configure(headerValores, dataValores: TArray<String>)
+      : TDictionary<string, string>;
+
     constructor Create; Overload;
-    constructor Create(inputTitulo, inputDados : TArray<string>); Overload;
-    function getDados : TDictionary<String,String>;
+    constructor Create(inputHeader: TArray<string>); Overload;
+    constructor Create(inputTitulo, inputDados: TArray<string>); Overload;
+
   End;
+
 implementation
 
 { Metadado }
 
-constructor Metadado.Create;
+// procedure Metadado.configure();
+function Metadado.configure(headerValores, dataValores: TArray<String>)
+  : TDictionary<string, string>;
+var
+  retorno: TDictionary<String, String>;
+  i: integer;
+  E: Exception;
+begin
+  // etorno := TDictionary<String, String>.Create();
+  try
+    begin
+      retorno := TDictionary<String, String>.Create();
+      for i := 0 to High(dataValores) do
+      begin
+        retorno.Add(headerValores[i], dataValores[i]);
+      end;
+    end;
+
+  except
+    on E: Exception do
+      i := 0;
+
+  end;
+  Result := retorno;
+end;
+
+constructor Metadado.Create();
+
 begin
 
 end;
 
-
 constructor Metadado.Create(inputTitulo, inputDados: TArray<string>);
 var
-  I : integer;
+  i: integer;
+  E: Exception;
+begin
+
+  try
+    Self.data := TDictionary<String,String>.create;
+
+    dataValores := TArray<String>.create();
+    headerValores := TArray<String>.Create();
+
+    dataValores := inputDados;
+    headerValores := inputTitulo;
+
+  finally
+
+  end;
+
+end;
+
+constructor Metadado.Create(inputHeader: TArray<string>);
 
 begin
-   try
-     //Self.data.Create(High(inputTitulo));
-     Self.data := TDictionary<String, String>.Create();
 
-     for I := 0 to High(inputTitulo) do
-     begin
-       //Self.data.add(inputTitulo[I], inputDados[i]);
-       Self.data.add(inputTitulo[I], inputDados[I]);
-     end;
-       {
-     Self.data.add(inputTitulo[0], inputDados[0]);
-     Self.data.add(inputTitulo[1], inputDados[1]);
-     Self.data.add(inputTitulo[2], inputDados[2]);
-     Self.data.add(inputTitulo[3], inputDados[3]);
-     Self.data.add(inputTitulo[4], inputDados[4]);
-     Self.data.add(inputTitulo[5], inputDados[5]);
-     Self.data.add(inputTitulo[6], inputDados[6]);
-     Self.data.add(inputTitulo[7], inputDados[7]);
-     Self.data.add(inputTitulo[8], inputDados[8]);
-     Self.data.add(inputTitulo[9], inputDados[9]);
-     Self.data.add(inputTitulo[10], inputDados[10]);
-     Self.data.add(inputTitulo[11], inputDados[11]);
-     Self.data.add(inputTitulo[12], inputDados[12]);
-
-     }
-   finally
-
-   end;
-
+  // headerValores := TDictionary<String,String>.create;
+  // dataValores := TArray<String>.create();
+  // headerValores:= TArray<String>.create;
+  headerValores := inputHeader;
+  // dataValores  := TArray<String>.create();
+  data := TDictionary<String, String>.Create;
+  header := TDictionary<String, String>.Create;
 end;
 
 function Metadado.getDados: TDictionary<String, String>;
 begin
   if data.Count > 0 then
   begin
-     Result := data;
+    Result := data;
   end
   else
   begin
-     Result := nil;
+    Result := nil;
   end;
 
 end;

@@ -2,11 +2,11 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2016/06/15 16:42:55.000.768,=C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2016/06/15 16:43:54.000.157,C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Danilo\Documents\GitHub\ETL\ETL.pas</Transaction>
-    <Transaction>2016/06/15 16:43:54.000.157,C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Danilo\Documents\GitHub\ETL\ETL.dfm</Transaction>
-    <Transaction>2016/06/15 16:59:12.000.328,C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Danilo\Documents\GitHub\ETL\etlMain.dproj</Transaction>
+    <Transaction>2016/06/15 16:43:54.000.157,C:\Users\Danilo\Documents\GitHub\ETL\ETL.pas=C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/06/15 16:43:54.000.157,C:\Users\Danilo\Documents\GitHub\ETL\ETL.dfm=C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2016/06/15 16:59:12.000.328,C:\Users\Danilo\Documents\GitHub\ETL\etlMain.dproj=C:\Users\Danilo\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>2016/06/16 15:14:03.000.605,=Z:\ETL\models\models.pas</Transaction>
     <Transaction>2016/06/16 15:14:10.000.995,=Z:\ETL\controladores\controladores.pas</Transaction>
-    <Transaction>2016/06/16 15:35:03.000.082,Z:\ETL\models\models.pas=Z:\ETL\models\modelos.pas</Transaction>
+    <Transaction>2016/06/16 15:35:03.000.082,Z:\ETL\models\modelos.pas=Z:\ETL\models\models.pas</Transaction>
   </Transactions>
 </BorlandProject>

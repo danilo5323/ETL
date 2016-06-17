@@ -1,0 +1,60 @@
+unit ETL;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtDlgs, Generics.collections,
+  //classes
+  modelos, controladores;
+
+type
+  TFrmIndex = class(TForm)
+    Label1: TLabel;
+    Label2: TLabel;
+    OTFD_Input: TOpenTextFileDialog;
+    STFD_Output: TSaveTextFileDialog;
+    edtLeitura: TEdit;
+    edtEscrita: TEdit;
+    btnInput: TButton;
+    BtnOutput: TButton;
+    btnProcessar: TButton;
+    LabelAccess: TLabel;
+    Controlador : TControlador;
+    procedure btnInputClick(Sender: TObject);
+    procedure btnProcessarClick(Sender: TObject);
+    procedure BtnOutputClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmIndex: TFrmIndex;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmIndex.btnInputClick(Sender: TObject);
+var
+tmpSTR : string;
+begin
+
+
+end;
+
+procedure TFrmIndex.BtnOutputClick(Sender: TObject);
+begin
+  Self.Controlador := TControlador.Create(edtLeitura.Text, edtEscrita.Text, chr(9));
+end;
+
+procedure TFrmIndex.btnProcessarClick(Sender: TObject);
+begin
+
+  LabelAccess.Caption := Self.Controlador.processar;
+
+end;
+
+end.

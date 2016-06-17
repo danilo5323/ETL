@@ -1,0 +1,12 @@
+unit models;
+
+interface
+
+type
+  Metadado = Class
+    Titulo : Array of String;
+    Data : TDictionary <String, String>;
+  End;
+implementation
+
+end.

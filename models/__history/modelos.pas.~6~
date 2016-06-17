@@ -1,0 +1,61 @@
+unit modelos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtDlgs, Generics.collections;
+
+type
+  Metadado = Class
+    private
+    titulo : Array of String;
+    data : TDictionary <String, String>;
+    banco : String; /// banco que será utilizado
+
+    public
+    constructor Create; Overload;
+    constructor Create(inputTitulo, inputDados : Array of String); Overload;
+    function getDados : TDictionary<String,String>;
+  End;
+implementation
+
+{ Metadado }
+
+constructor Metadado.Create;
+begin
+
+end;
+
+
+constructor Metadado.Create(inputTitulo, inputDados: array of String);
+var
+  I : long;
+
+begin
+   try
+     data := TDictionary<String,String>.Create();
+     for I := 0 to High(inputDados) do
+     begin
+       data.add(inputTitulo[I],inputDados[i]);
+     end;
+   finally
+
+   end;
+
+end;
+
+function Metadado.getDados: TDictionary<String, String>;
+begin
+  if data.Count > 0 then
+  begin
+     Result := data;
+  end
+  else
+  begin
+     Result := nil;
+  end;
+
+end;
+
+end.

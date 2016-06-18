@@ -29,13 +29,10 @@ type
   TControlador = class
   const
 
-
-    // valuesSQL: string = ' values '; // valores
-
   private
     insertSQL: string;// = ' insert into '; // insert
     modelo: Metadado;
-    separador: string;
+    separador: char;
     header: TArray<string>;
     campos: TArray<string>;
 
@@ -60,6 +57,8 @@ type
       inputQuantidade: integer): boolean;
     procedure setArqEscrita(tmpStr: string);
 
+    procedure setSeparador(input : string);
+
     procedure setTabelaSaida(input : string);
    end;
 
@@ -77,6 +76,12 @@ end;
   begin
      insertSQL:= 'insert into ' + input;
   end;
+
+  procedure TControlador.setSeparador(input : string);
+  begin
+    Self.separador:= input.Chars[0];
+  end;
+
 
 
 function TControlador.processar: string;
@@ -98,7 +103,7 @@ begin
 
   begin
     try
-      chrArray[0] := chr(9);
+      chrArray[0] := self.separador;
       valor := tmpString.Split(chrArray);
     finally
 
@@ -149,9 +154,7 @@ end;
 procedure TControlador.setArqEscrita(tmpStr: string);
 begin
   self.arquivoSaida.Free;
-  // self.arquivoSaida := nil;
   self.arquivoSaida.create(tmpStr);
-
 end;
 
 function TControlador.setCamposInsert(valores: TArray<string>): boolean;
@@ -163,15 +166,17 @@ constructor TControlador.create(strarquivoEntrada, strarquivoSaida,
   strseparador: string);
 var
   tmpString: string;
-  chrArray: Array [0 .. 0] of char;
+  chrArray: Array [0 .. 0] of string;
 begin
   try
     self.arquivoEntrada := TManipuladorArquivo.create(strarquivoEntrada);
 
     self.arquivoSaida := TManipuladorArquivo.create(strarquivoSaida);
+    self.separador :=  strseparador.Chars[0];
 
     tmpString := self.arquivoEntrada.header;
-    chrArray[0] := chr(9);
+
+    chrArray[0] := strseparador.Chars[0];
 
     self.header := tmpString.Split(chrArray);
 
@@ -181,12 +186,12 @@ end;
 
 function TControlador.getCampos: string;
 begin
-  /// return ( campo1, campo2, campo3 )
+  /// return ( campo1, campo2, campo3, [...] )
 end;
 
 function TControlador.getDados: string;
 begin
-  /// return (variavel1, variavel2, variavel3)
+  /// return (variavel1, variavel2, variavel3, [...])
 end;
 
 function TControlador.salvarArquivo(inputArquivo: string;
@@ -214,15 +219,13 @@ begin
         break
       end;
 
-    arquivosSaida := inputArquivo + inttostr(versaoArquivo);
+    arquivosSaida := inputArquivo + inttostr(versaoArquivo) + '.sql';
 
     /// fluxo para salvar o novo arquivo;
     self.arquivoSaida := TManipuladorArquivo.create(arquivosSaida);
     self.arquivoSaida.salvar(dadosarquivosaida, arquivosSaida);
 
     // apenas se o arquivo existir!
-    //self.arquivoSaida.fecharArquivo;
-
     versaoArquivo := versaoArquivo + 1;
   end;
 

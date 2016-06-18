@@ -24,7 +24,6 @@ type
 
     procedure btnInputClick(Sender: TObject);
     procedure btnProcessarClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure BtnOutputClick(Sender: TObject);
     procedure edtQtdLinhasChange(Sender: TObject);
   private
@@ -70,7 +69,7 @@ tmpSTR:= '';
         self.strArquivoEscrita:= tmpStr;
         if(Self.Controlador = nil) then
         begin
-          Self.Controlador := TControlador.Create(tmpStr, ExtractFilePath(tmpStr) + 'output\default.txt' ,chr(9));
+          Self.Controlador := TControlador.Create(tmpStr, ExtractFilePath(tmpStr) + 'output\default' ,chr(9));
         end
         else
         begin
@@ -95,20 +94,8 @@ begin
 end;
 procedure TFrmIndex.edtQtdLinhasChange(Sender: TObject);
 begin
-/// Self.Label1
 ///  codigo para dividor arquivos de saida
 end;
 
-procedure TFrmIndex.FormCreate(Sender: TObject);
-var
-Arquibo001, arqSaida: string;
-begin
-    //metodo para coletar o arquivo
-    //Arquibo001:=edtLeitura.Text;
-    Arquibo001:='E:\compartilhada\201411_BolsaFamiliaFolhaPagamento.csv';
-     arqSaida:= ExtractFilePath(Arquibo001) + 'default.txt';
-    Self.Controlador := TControlador.Create(Arquibo001, arqSaida , chr(9));
-
-end;
 
 end.

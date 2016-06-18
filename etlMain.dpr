@@ -3,7 +3,6 @@ program etlMain;
 uses
   Vcl.Forms,
   ETL in 'ETL.pas' {FrmIndex},
-  modelos in 'models\modelos.pas',
   controladores in 'controladores\controladores.pas';
 
 {$R *.res}

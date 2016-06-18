@@ -38,9 +38,9 @@ object FrmIndex: TFrmIndex
   object Label4: TLabel
     Left = 8
     Top = 11
-    Width = 88
+    Width = 30
     Height = 13
-    Caption = 'tabela de inser'#231#227'o'
+    Caption = 'tabela'
   end
   object Label5: TLabel
     Left = 8
@@ -95,6 +95,7 @@ object FrmIndex: TFrmIndex
     Top = 123
     Width = 121
     Height = 21
+    NumbersOnly = True
     TabOrder = 5
     Text = '500'
     OnChange = edtQtdLinhasChange

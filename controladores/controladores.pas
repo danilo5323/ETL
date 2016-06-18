@@ -2,7 +2,7 @@ unit controladores;
 
 interface
 
-uses modelos, Generics.collections, SysUtils, Classes;
+uses  Generics.collections, SysUtils, Classes;
 
 type
   TManipuladorArquivo = class
@@ -31,7 +31,6 @@ type
 
   private
     insertSQL: string;// = ' insert into '; // insert
-    modelo: Metadado;
     separador: char;
     header: TArray<string>;
     campos: TArray<string>;

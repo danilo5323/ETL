@@ -17,11 +17,10 @@ type
     btnInput: TButton;
     BtnOutput: TButton;
     btnProcessar: TButton;
-    LabelAccess: TLabel;
-    OTFD_Input: TOpenTextFileDialog;
-    STFD_Output: TSaveTextFileDialog;
     edtQtdLinhas: TEdit;
     Label3: TLabel;
+    edtTabela: TEdit;
+    Label4: TLabel;
 
     procedure btnInputClick(Sender: TObject);
     procedure btnProcessarClick(Sender: TObject);
@@ -87,17 +86,12 @@ procedure TFrmIndex.btnProcessarClick(Sender: TObject);
 var
 tmpSTR: string;
 Arquibo001, arqSaida: string;
+quantidade : integer;
 begin
-    //metodo para coletar o arquivo
-    //Arquibo001:=edtLeitura.Text;
-   // Arquibo001:='E:\compartilhada\201411_BolsaFamiliaFolhaPagamento.csv';
- //    arqSaida:= ExtractFilePath(Arquibo001) + 'default.txt';
-   // Self.Controlador := TControlador.Create(Arquibo001, arqSaida , chr(9));
-
-//   Self.Controlador := TControlador.Create(edtLeitura.Text, edtEscrita.Text, chr(9));
- // LabelAccess.Caption := Self.Controlador.processar;
-  Controlador.salvarArquivo(arqSaida , 50)  ;
- // tmpSTR := '';
+  arqSaida := Self.edtEscrita.text;
+  quantidade:=  strtoint(Self.edtQtdLinhas.text);
+  Controlador.setTabelaSaida(edtTabela.text)  ;
+  Controlador.salvarArquivo(arqSaida , quantidade)  ;
 end;
 procedure TFrmIndex.edtQtdLinhasChange(Sender: TObject);
 begin

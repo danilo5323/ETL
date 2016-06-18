@@ -28,13 +28,6 @@ object FrmIndex: TFrmIndex
     Height = 13
     Caption = 'Arquivo de escrita'
   end
-  object LabelAccess: TLabel
-    Left = 112
-    Top = 126
-    Width = 58
-    Height = 13
-    Caption = 'LabelAccess'
-  end
   object Label3: TLabel
     Left = 8
     Top = 102
@@ -42,13 +35,19 @@ object FrmIndex: TFrmIndex
     Height = 13
     Caption = 'Quantidade de linhas'
   end
+  object Label4: TLabel
+    Left = 8
+    Top = 11
+    Width = 88
+    Height = 13
+    Caption = 'tabela de inser'#231#227'o'
+  end
   object edtLeitura: TEdit
     Left = 112
     Top = 45
     Width = 121
     Height = 21
     TabOrder = 0
-    Text = 'Z:\201411_BolsaFamiliaFolhaPagamento.csv'
   end
   object edtEscrita: TEdit
     Left = 112
@@ -93,12 +92,12 @@ object FrmIndex: TFrmIndex
     Text = '500'
     OnChange = edtQtdLinhasChange
   end
-  object OTFD_Input: TOpenTextFileDialog
-    Left = 272
-    Top = 152
-  end
-  object STFD_Output: TSaveTextFileDialog
-    Left = 328
-    Top = 152
+  object edtTabela: TEdit
+    Left = 112
+    Top = 8
+    Width = 121
+    Height = 21
+    TabOrder = 6
+    Text = 'tabela'
   end
 end

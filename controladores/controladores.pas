@@ -16,12 +16,10 @@ type
   protected
 
   public
-
+    function ultimo: boolean;
     function proximo: string;
     function header: string;
-    function salvar(  inputDados: TArray<String>;
-    arquivoSaida: string
-): boolean;
+    function salvar(inputDados: TArray<String>; arquivoSaida: string): boolean;
     constructor create; overload;
     constructor create(arquivoEntrada: string); overload;
     procedure fecharArquivo;
@@ -31,10 +29,11 @@ type
   TControlador = class
   const
 
-//    insertSQL: string = ' insert into '; // insert
-//    valuesSQL: string = ' values '; // valores
+
+    // valuesSQL: string = ' values '; // valores
 
   private
+    insertSQL: string;// = ' insert into '; // insert
     modelo: Metadado;
     separador: string;
     header: TArray<string>;
@@ -60,7 +59,9 @@ type
     function salvarArquivo(inputArquivo: string;
       inputQuantidade: integer): boolean;
     procedure setArqEscrita(tmpStr: string);
-  end;
+
+    procedure setTabelaSaida(input : string);
+   end;
 
 implementation
 
@@ -70,6 +71,13 @@ constructor TControlador.create;
 begin
 
 end;
+
+
+ procedure TControlador.setTabelaSaida(input : string);
+  begin
+     insertSQL:= 'insert into ' + input;
+  end;
+
 
 function TControlador.processar: string;
 
@@ -111,7 +119,7 @@ var
   i: integer;
   tmpInsert, tmpValores: String;
 begin
-  tmpInsert := 'insert into tabela ( ';
+  tmpInsert := insertSQL + ' ( ';
   tmpValores := ' values ( ';
 
   for i := 0 to High(header) do
@@ -129,7 +137,7 @@ begin
     end;
   end;
 
-  Result := tmpInsert + ')' + tmpValores + ')';
+  Result := tmpInsert + ')' + tmpValores + ');';
 
 end;
 
@@ -140,9 +148,9 @@ end;
 
 procedure TControlador.setArqEscrita(tmpStr: string);
 begin
-  Self.arquivoSaida.Free;
-  Self.arquivoSaida := nil;
-  Self.arquivoSaida.create(tmpStr);
+  self.arquivoSaida.Free;
+  // self.arquivoSaida := nil;
+  self.arquivoSaida.create(tmpStr);
 
 end;
 
@@ -160,12 +168,7 @@ begin
   try
     self.arquivoEntrada := TManipuladorArquivo.create(strarquivoEntrada);
 
-
-
     self.arquivoSaida := TManipuladorArquivo.create(strarquivoSaida);
-
-
-
 
     tmpString := self.arquivoEntrada.header;
     chrArray[0] := chr(9);
@@ -188,24 +191,41 @@ end;
 
 function TControlador.salvarArquivo(inputArquivo: string;
   inputQuantidade: integer): boolean;
-  var
-     dadosarquivosaida : TArray<String>;
-     I : Integer;
+var
+  dadosarquivosaida: TArray<String>;
+  i: integer;
+  versaoArquivo: integer;
+  arquivosSaida: string;
 begin
 
-   SetLength(dadosarquivosaida, inputQuantidade);
+  SetLength(dadosarquivosaida, inputQuantidade);
+  versaoArquivo := 0;
+  // verificar se o arquivo terminou e realizar looping até o fim
 
+  while not arquivoEntrada.ultimo do
+  begin
+    for i := 0 to (inputQuantidade - 1) do
+      if (not arquivoEntrada.ultimo) then
+      begin
+        dadosarquivosaida[i] := processar;
+      end
+      else
+      begin
+        break
+      end;
 
-   for I := 0 to inputQuantidade - 1 do
-       dadosarquivosaida[i] := processar;
+    arquivosSaida := inputArquivo + inttostr(versaoArquivo);
 
-  /// dadosSaida :=   TArray<String>
-  ///
-  /// loop ate inputquantidade
+    /// fluxo para salvar o novo arquivo;
+    self.arquivoSaida := TManipuladorArquivo.create(arquivosSaida);
+    self.arquivoSaida.salvar(dadosarquivosaida, arquivosSaida);
 
-  /// dadosSaida > Self.proximo
-      Self.arquivoSaida.salvar(dadosarquivosaida, inputArquivo)
-  /// arquivoSaida.salvar(dadosSaida, quantidade)
+    // apenas se o arquivo existir!
+    //self.arquivoSaida.fecharArquivo;
+
+    versaoArquivo := versaoArquivo + 1;
+  end;
+
 end;
 
 { TManipuladorArquivo }
@@ -216,24 +236,28 @@ begin
 end;
 
 procedure TManipuladorArquivo.fecharArquivo;
+var
+  e: exception;
 begin
-  CloseFile(self.arquivo);
+  try
+    CloseFile(self.arquivo);
+
+  finally
+
+  end;
+
 end;
 
 constructor TManipuladorArquivo.create(arquivoEntrada: string);
 begin
   try
-    // AssignFile(Self.arquivo, linhaEntrada);
-     ///escreve o arquivo de saida no disco
-
 
     AssignFile(self.arquivo, arquivoEntrada);
     if not FileExists(arquivoEntrada) then
     begin
       CreateDir(ExtractFilePath(arquivoEntrada));
-      Rewrite(Self.arquivo);
+      Rewrite(self.arquivo);
     end;
-
 
 {$I-}
     reset(self.arquivo);
@@ -265,22 +289,26 @@ begin
   end;
 end;
 
-function TManipuladorArquivo.salvar(  inputDados: TArray<String>;
- arquivoSaida: string
-): boolean;
+function TManipuladorArquivo.salvar(inputDados: TArray<String>;
+  arquivoSaida: string): boolean;
 var
   i: integer;
-  outputArquivo : TextFile;
+  outputArquivo: TextFile;
 begin
-  //validar o nome do arquivo se realmente é o arquivo de saida
-//  AssignFile(Self.arquivo, arquivoSaida);
-  Rewrite(Self.arquivo);
+  // validar o nome do arquivo se realmente é o arquivo de saida
+  Rewrite(self.arquivo);
+
   for i := 0 to high(inputDados) do
   begin
-     write(Self.arquivo, inputDados[i]);
+    write(self.arquivo, inputDados[i]);
   end;
 
-  CloseFile(Self.arquivo);
+  CloseFile(self.arquivo);
+end;
+
+function TManipuladorArquivo.ultimo: boolean;
+begin
+  Result := eof(self.arquivo);
 end;
 
 end.

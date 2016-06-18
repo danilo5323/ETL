@@ -27,12 +27,19 @@ object FrmIndex: TFrmIndex
     Height = 13
     Caption = 'Arquivo de escrita'
   end
-  object LabelAccess: TLabel
-    Left = 112
-    Top = 112
-    Width = 58
+  object Label3: TLabel
+    Left = 8
+    Top = 102
+    Width = 101
     Height = 13
-    Caption = 'LabelAccess'
+    Caption = 'Quantidade de linhas'
+  end
+  object Label4: TLabel
+    Left = 8
+    Top = 11
+    Width = 88
+    Height = 13
+    Caption = 'tabela de inser'#231#227'o'
   end
   object edtLeitura: TEdit
     Left = 112
@@ -40,7 +47,6 @@ object FrmIndex: TFrmIndex
     Width = 121
     Height = 21
     TabOrder = 0
-    Text = 'Z:\arquivo.csv'
   end
   object edtEscrita: TEdit
     Left = 112
@@ -65,6 +71,7 @@ object FrmIndex: TFrmIndex
     Height = 25
     Caption = '...'
     TabOrder = 3
+    OnClick = BtnOutputClick
   end
   object btnProcessar: TButton
     Left = 8
@@ -74,5 +81,22 @@ object FrmIndex: TFrmIndex
     Caption = 'Processar'
     TabOrder = 4
     OnClick = btnProcessarClick
+  end
+  object edtQtdLinhas: TEdit
+    Left = 112
+    Top = 99
+    Width = 121
+    Height = 21
+    TabOrder = 5
+    Text = '500'
+    OnChange = edtQtdLinhasChange
+  end
+  object edtTabela: TEdit
+    Left = 112
+    Top = 8
+    Width = 121
+    Height = 21
+    TabOrder = 6
+    Text = 'tabela'
   end
 end

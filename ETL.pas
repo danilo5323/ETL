@@ -21,11 +21,14 @@ type
     Label3: TLabel;
     edtTabela: TEdit;
     Label4: TLabel;
+    edtCaractereSeparador: TEdit;
+    Label5: TLabel;
 
     procedure btnInputClick(Sender: TObject);
     procedure btnProcessarClick(Sender: TObject);
     procedure BtnOutputClick(Sender: TObject);
     procedure edtQtdLinhasChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     strArquivoEscrita, strArquivoLeitura: string;
@@ -46,13 +49,14 @@ var
 tmpSTR : string;
 
 begin
+
     if(PromptForFileName(tmpSTR, '', '', 'Selecionar arquivo', 'C:\', false)) then
     begin
         edtLeitura.Text:= tmpStr;
         strArquivoEscrita := ExtractFilePath(tmpStr) + 'output\default.txt';
         edtEscrita.Text := strArquivoEscrita;
         self.strArquivoLeitura:= tmpStr;
-        Self.Controlador := TControlador.Create(tmpStr, strArquivoEscrita ,chr(9));
+        Self.Controlador := TControlador.Create(tmpStr, strArquivoEscrita ,  edtCaractereSeparador.text);
     end;
 
 
@@ -69,7 +73,7 @@ tmpSTR:= '';
         self.strArquivoEscrita:= tmpStr;
         if(Self.Controlador = nil) then
         begin
-          Self.Controlador := TControlador.Create(tmpStr, ExtractFilePath(tmpStr) + 'output\default' ,chr(9));
+          Self.Controlador := TControlador.Create(tmpStr, ExtractFilePath(tmpStr) + 'output\default' , edtCaractereSeparador.text);
         end
         else
         begin
@@ -89,6 +93,7 @@ quantidade : integer;
 begin
   arqSaida := Self.edtEscrita.text;
   quantidade:=  strtoint(Self.edtQtdLinhas.text);
+  Controlador.setSeparador (  edtCaractereSeparador.text);
   Controlador.setTabelaSaida(edtTabela.text)  ;
   Controlador.salvarArquivo(arqSaida , quantidade)  ;
 end;
@@ -97,5 +102,10 @@ begin
 ///  codigo para dividor arquivos de saida
 end;
 
+
+procedure TFrmIndex.FormCreate(Sender: TObject);
+begin
+  edtCaractereSeparador.Text := #9;
+end;
 
 end.

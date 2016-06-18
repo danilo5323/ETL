@@ -30,10 +30,17 @@ object FrmIndex: TFrmIndex
   end
   object LabelAccess: TLabel
     Left = 112
-    Top = 112
+    Top = 126
     Width = 58
     Height = 13
     Caption = 'LabelAccess'
+  end
+  object Label3: TLabel
+    Left = 8
+    Top = 102
+    Width = 101
+    Height = 13
+    Caption = 'Quantidade de linhas'
   end
   object edtLeitura: TEdit
     Left = 112
@@ -66,6 +73,7 @@ object FrmIndex: TFrmIndex
     Height = 25
     Caption = '...'
     TabOrder = 3
+    OnClick = BtnOutputClick
   end
   object btnProcessar: TButton
     Left = 8
@@ -75,6 +83,15 @@ object FrmIndex: TFrmIndex
     Caption = 'Processar'
     TabOrder = 4
     OnClick = btnProcessarClick
+  end
+  object edtQtdLinhas: TEdit
+    Left = 112
+    Top = 99
+    Width = 121
+    Height = 21
+    TabOrder = 5
+    Text = '500'
+    OnChange = edtQtdLinhasChange
   end
   object OTFD_Input: TOpenTextFileDialog
     Left = 272

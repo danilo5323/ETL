@@ -11,6 +11,7 @@ object FrmIndex: TFrmIndex
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -40,7 +41,7 @@ object FrmIndex: TFrmIndex
     Width = 121
     Height = 21
     TabOrder = 0
-    Text = '\\T-REX\compartilhada\201411_BolsaFamiliaFolhaPagamento.csv'
+    Text = 'Z:\201411_BolsaFamiliaFolhaPagamento.csv'
   end
   object edtEscrita: TEdit
     Left = 112
@@ -65,7 +66,6 @@ object FrmIndex: TFrmIndex
     Height = 25
     Caption = '...'
     TabOrder = 3
-    OnClick = BtnOutputClick
   end
   object btnProcessar: TButton
     Left = 8

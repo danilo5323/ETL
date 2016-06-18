@@ -31,8 +31,8 @@ type
   TControlador = class
   const
 
-    insertSQL: string = ' insert into '; // insert
-    valuesSQL: string = ' values '; // valores
+//    insertSQL: string = ' insert into '; // insert
+//    valuesSQL: string = ' values '; // valores
 
   private
     modelo: Metadado;
@@ -59,6 +59,7 @@ type
       strseparador: string); overload;
     function salvarArquivo(inputArquivo: string;
       inputQuantidade: integer): boolean;
+    procedure setArqEscrita(tmpStr: string);
   end;
 
 implementation
@@ -137,6 +138,14 @@ begin
 
 end;
 
+procedure TControlador.setArqEscrita(tmpStr: string);
+begin
+  Self.arquivoSaida.Free;
+  Self.arquivoSaida := nil;
+  Self.arquivoSaida.create(tmpStr);
+
+end;
+
 function TControlador.setCamposInsert(valores: TArray<string>): boolean;
 begin
 
@@ -150,7 +159,13 @@ var
 begin
   try
     self.arquivoEntrada := TManipuladorArquivo.create(strarquivoEntrada);
+
+
+
     self.arquivoSaida := TManipuladorArquivo.create(strarquivoSaida);
+
+
+
 
     tmpString := self.arquivoEntrada.header;
     chrArray[0] := chr(9);
@@ -209,7 +224,17 @@ constructor TManipuladorArquivo.create(arquivoEntrada: string);
 begin
   try
     // AssignFile(Self.arquivo, linhaEntrada);
+     ///escreve o arquivo de saida no disco
+
+
     AssignFile(self.arquivo, arquivoEntrada);
+    if not FileExists(arquivoEntrada) then
+    begin
+      CreateDir(ExtractFilePath(arquivoEntrada));
+      Rewrite(Self.arquivo);
+    end;
+
+
 {$I-}
     reset(self.arquivo);
 {$I+}

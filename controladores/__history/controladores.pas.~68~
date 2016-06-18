@@ -12,17 +12,19 @@ type
     linhaEntrada: string;
     linhaSaida: string;
     arquivo: TextFile;
+
   protected
 
   public
 
     function proximo: string;
     function header: string;
-    function salvar: boolean;
+    function salvar(  inputDados: TArray<String>;
+    arquivoSaida: string
+): boolean;
     constructor create; overload;
     constructor create(arquivoEntrada: string); overload;
     procedure fecharArquivo;
-
   end;
 
 type
@@ -33,6 +35,7 @@ type
     valuesSQL: string = ' values '; // valores
 
   private
+    modelo: Metadado;
     separador: string;
     header: TArray<string>;
     campos: TArray<string>;
@@ -43,6 +46,8 @@ type
     // configura os headers
     function camposValues(valores: TArray<string>): string;
     // formata os campos a sere inserido
+
+    function configSQL(header, valor: TArray<String>): String;
   protected
 
   public
@@ -52,7 +57,8 @@ type
     constructor create; overload;
     constructor create(strarquivoEntrada, strarquivoSaida,
       strseparador: string); overload;
-
+    function salvarArquivo(inputArquivo: string;
+      inputQuantidade: integer): boolean;
   end;
 
 implementation
@@ -67,9 +73,7 @@ end;
 function TControlador.processar: string;
 
 var
-  modelo: Metadado;
-  Header: TArray<string>;
-  Valor: TArray<string>;
+  valor: TArray<string>;
   resultado: String;
   dados: TDictionary<string, string>;
   retorno: string;
@@ -77,7 +81,7 @@ var
   Key: string;
   tmpString: string;
   list: TstringList;
-  chrArray : Array[0..3] of String;
+  chrArray: Array [0 .. 3] of String;
 begin
 
   tmpString := arquivoEntrada.proximo;
@@ -85,40 +89,47 @@ begin
 
   begin
     try
-     // tmpString := Self.arquivoEntrada.proximo;
       chrArray[0] := chr(9);
-
-      Valor  := tmpString.Split(chrArray);
+      valor := tmpString.Split(chrArray);
     finally
 
     end;
   end;
 
- modelo.create(self.header, valor);
-
- dados:= TDictionary<string, string>.create()  ;
-
-// modelo.configureP(header, campos, dados);
-
-  //dados := modelo.getDados;
-
   i := 0;
 
-  for Key in dados.Keys do
+  resultado := configSQL(self.header, valor);
+  retorno := resultado + AnsiString(#13#10);
+
+  Result := retorno;
+
+end;
+
+function TControlador.configSQL(header, valor: TArray<String>): String;
+var
+  i: integer;
+  tmpInsert, tmpValores: String;
+begin
+  tmpInsert := 'insert into tabela ( ';
+  tmpValores := ' values ( ';
+
+  for i := 0 to High(header) do
   begin
-    // for I := 0 to High(dados.Count) do begin
-    if (dados.TryGetValue(campos[i], resultado)) then
+
+    tmpInsert := tmpInsert + StringReplace(header[i], ' ', '_',
+      [rfReplaceAll, rfIgnoreCase]);
+
+    tmpValores := tmpValores + #39 + valor[i] + #39;
+
+    if i < high(header) then
     begin
-
-      retorno := retorno + Key + ' | ' + resultado +
-
-        AnsiString(#13#10);
+      tmpInsert := tmpInsert + ', ';
+      tmpValores := tmpValores + ', ';
     end;
-    i := i + 1;
   end;
-//  modelo.Free;
-  modelo.free;
-  result := retorno;
+
+  Result := tmpInsert + ')' + tmpValores + ')';
+
 end;
 
 function TControlador.camposValues(valores: TArray<string>): string;
@@ -135,15 +146,17 @@ constructor TControlador.create(strarquivoEntrada, strarquivoSaida,
   strseparador: string);
 var
   tmpString: string;
-  chrArray : Array [0..0] of char;
+  chrArray: Array [0 .. 0] of char;
 begin
   try
-    Self.arquivoEntrada := TManipuladorArquivo.create(strarquivoEntrada);
+    self.arquivoEntrada := TManipuladorArquivo.create(strarquivoEntrada);
+    self.arquivoSaida := TManipuladorArquivo.create(strarquivoSaida);
 
-    tmpString := Self.arquivoEntrada.header;
-
+    tmpString := self.arquivoEntrada.header;
     chrArray[0] := chr(9);
-    Self.Header  := tmpString.Split(chrArray);
+
+    self.header := tmpString.Split(chrArray);
+
   finally
   end;
 end;
@@ -158,6 +171,28 @@ begin
   /// return (variavel1, variavel2, variavel3)
 end;
 
+function TControlador.salvarArquivo(inputArquivo: string;
+  inputQuantidade: integer): boolean;
+  var
+     dadosarquivosaida : TArray<String>;
+     I : Integer;
+begin
+
+   SetLength(dadosarquivosaida, inputQuantidade);
+
+
+   for I := 0 to inputQuantidade - 1 do
+       dadosarquivosaida[i] := processar;
+
+  /// dadosSaida :=   TArray<String>
+  ///
+  /// loop ate inputquantidade
+
+  /// dadosSaida > Self.proximo
+      Self.arquivoSaida.salvar(dadosarquivosaida, inputArquivo)
+  /// arquivoSaida.salvar(dadosSaida, quantidade)
+end;
+
 { TManipuladorArquivo }
 
 constructor TManipuladorArquivo.create;
@@ -167,16 +202,16 @@ end;
 
 procedure TManipuladorArquivo.fecharArquivo;
 begin
-  CloseFile(Self.arquivo);
+  CloseFile(self.arquivo);
 end;
 
 constructor TManipuladorArquivo.create(arquivoEntrada: string);
 begin
   try
     // AssignFile(Self.arquivo, linhaEntrada);
-    AssignFile(Self.arquivo, arquivoEntrada);
+    AssignFile(self.arquivo, arquivoEntrada);
 {$I-}
-    reset(Self.arquivo);
+    reset(self.arquivo);
 {$I+}
   finally
 
@@ -186,7 +221,7 @@ end;
 function TManipuladorArquivo.header: string; // deve ser utilizado primeiro
 
 begin
-  result := proximo();
+  Result := proximo();
 end;
 
 function TManipuladorArquivo.proximo: string;
@@ -194,20 +229,33 @@ var
   linha: string;
 begin
   try
-    result := '';
-    if (not eof(Self.arquivo)) then
+    Result := '';
+    if (not eof(self.arquivo)) then
     begin
-      readln(Self.arquivo, linha);
-      result := linha;
+      readln(self.arquivo, linha);
+      Result := linha;
     end;
   finally
 
   end;
 end;
 
-function TManipuladorArquivo.salvar: boolean;
+function TManipuladorArquivo.salvar(  inputDados: TArray<String>;
+ arquivoSaida: string
+): boolean;
+var
+  i: integer;
+  outputArquivo : TextFile;
 begin
+  //validar o nome do arquivo se realmente é o arquivo de saida
+//  AssignFile(Self.arquivo, arquivoSaida);
+  Rewrite(Self.arquivo);
+  for i := 0 to high(inputDados) do
+  begin
+     write(Self.arquivo, inputDados[i]);
+  end;
 
+  CloseFile(Self.arquivo);
 end;
 
 end.

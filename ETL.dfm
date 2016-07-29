@@ -2,8 +2,8 @@ object FrmIndex: TFrmIndex
   Left = 0
   Top = 0
   Caption = 'Steban'
-  ClientHeight = 242
-  ClientWidth = 447
+  ClientHeight = 198
+  ClientWidth = 372
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
